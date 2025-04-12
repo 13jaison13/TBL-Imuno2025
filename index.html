@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jogo de MBE 2025</title>
+  <script src="quiz25.js" defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+      margin: 0;
+    }
+    .header-container {
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .header-container img {
+      max-width: 200px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 10px auto;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #007BFF;
+    }
+    p {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .quiz-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .info-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .progress-text {
+      font-size: 16px;
+    }
+    .timer {
+      font-size: 16px;
+      color: #d9534f; /* vermelho para destacar */
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .option {
+      margin-bottom: 10px;
+    }
+    button {
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .explanation {
+      margin-top: 10px;
+      color: #333;
+      font-size: 14px;
+      background: #eef;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate {
+      animation: bounce 0.6s ease;
+      display: inline-block;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .shake {
+      animation: shake 0.3s ease;
+    }
+    .acerto {
+      color: green;
+      font-size: 18px;
+    }
+    .erro {
+      color: red;
+      font-size: 18px;
+    }
+    .highlight-correct {
+      background-color: #d4edda; /* verde clarinho */
+      transition: background-color 0.5s ease;
+    }
+    .highlight-wrong {
+      background-color: #f8d7da; /* vermelho clarinho */
+      transition: background-color 0.5s ease;
+    }
+
+    /* Modo Revisão */
+    .review-container {
+      display: none; /* aparecerá apenas no final, se o usuário clicar em Revisar */
+      max-width: 700px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .review-item {
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+    }
+    .review-item:last-child {
+      border: none;
+    }
+    .review-question {
+      font-weight: bold;
+    }
+    .review-correct {
+      color: green;
+      font-weight: bold;
+    }
+    .review-wrong {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Responsividade básica */
+    @media (max-width: 600px) {
+      .quiz-container {
+        padding: 10px;
+      }
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+      .info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body role="main">
+  <header class="header-container">
+    <img src="JaisonSilva.png" alt="Imagem Ghibli de Jaison" />
+
+    <h1 id="mainTitle" role="heading" aria-level="1">JOGO DE MBE 2025</h1>
+    <p>Criado por Jaison Silva</p>
+  </header>
+
+  <!-- Container do Quiz -->
+  <div class="quiz-container" id="quizContainer" aria-live="polite">
+    <!-- Barra de info (progresso e timer) -->
+    <div class="info-bar">
+      <div class="progress-text" id="progressText">Pergunta 1 de 40</div>
+      <div class="timer" id="timer">90</div>
+    </div>
+
+    <div id="quiz">
+      <div class="question" id="question">Carregando pergunta...</div>
+      <div class="options" id="options"></div>
+      <button onclick="submitAnswer()" id="submitBtn">Responder</button>
+      <div class="explanation" id="explanation"></div>
+      <button onclick="nextQuestion()" style="display:none;" id="nextBtn">Próxima</button>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+
+  <!-- Container de Revisão (inicialmente oculto) -->
+  <div class="review-container" id="reviewContainer">
+    <h2>Revisão das Respostas</h2>
+    <div id="reviewContent"></div>
+  </div>
+</body>
+</html>
